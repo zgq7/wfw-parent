@@ -1,0 +1,4 @@
+#原理：SpringFactoriesLoader载荷从和实例化给定类型的工厂“META-INF/spring.factories”文件，其可存在于在类路径多个JAR文件
+#auto configuration
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.wfw.framework.config.WebConfig
