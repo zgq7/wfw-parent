@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>com.wfw</groupId>
-    <artifactId>parent</artifactId>
+    <artifactId>wfw-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
     <name>wfw-parent</name>
