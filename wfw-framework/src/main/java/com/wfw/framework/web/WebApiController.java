@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
 /**
- * @Author liaonanzhou
+ * @Author zhugenqi
  * @Date 2021/2/3 15:21
  * @Description 所有controller 进行继承，集中处理相应层公共代码
  */

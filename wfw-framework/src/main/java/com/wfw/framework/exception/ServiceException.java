@@ -16,7 +16,7 @@ public class ServiceException extends RuntimeException implements Serializable {
 
     private int code = 3000;
 
-    private String msg;
+    private String msg = "系统错误";
 
     public ServiceException(String msg){
         super(msg);
@@ -28,5 +28,4 @@ public class ServiceException extends RuntimeException implements Serializable {
         this.code = code;
         this.msg = msg;
     }
-
 }

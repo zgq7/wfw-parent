@@ -19,24 +19,18 @@ public class WebApiResponse<T> {
 
     private String msg;
 
-    public WebApiResponse() {
-        this.setCode(HttpStatus.OK.value());
-        this.setMsg(HttpStatus.OK.getReasonPhrase());
-    }
-
     public static <T> WebApiResponse<T> ok() {
+        WebApiResponse webApiResponse = new WebApiResponse();
+        webApiResponse.setCode(HttpStatus.OK.value());
+        webApiResponse.setMsg(HttpStatus.OK.getReasonPhrase());
         return new WebApiResponse<>();
     }
 
     public static <T> WebApiResponse<T> ok(T data) {
-        WebApiResponse<T> result = new WebApiResponse<>();
+        WebApiResponse<T> result = WebApiResponse.ok();
         result.setData(data);
         return result;
     }
 
-    public static void main(String[] args) {
-        WebApiResponse<String> webApiResponse = WebApiResponse.ok("1");
-        System.out.println(webApiResponse);
-    }
 
 }

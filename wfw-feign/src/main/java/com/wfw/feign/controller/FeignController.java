@@ -1,6 +1,6 @@
 package com.wfw.feign.controller;
 
-import com.wfw.feign.feign.WebFeignClient;
+import com.wfw.feign.feign.WebFeign;
 import com.wfw.framework.web.WebApiController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,15 +18,15 @@ public class FeignController extends WebApiController {
 
     private static final Logger logger = LoggerFactory.getLogger(FeignController.class);
 
-    private final WebFeignClient webFeignClient;
+    private final WebFeign webFeign;
 
-    public FeignController(WebFeignClient webFeignClient) {
-        this.webFeignClient = webFeignClient;
+    public FeignController(WebFeign webFeign) {
+        this.webFeign = webFeign;
     }
 
     @GetMapping
     public ResponseEntity<String> getSome() {
         logger.info("access feign");
-        return response(webFeignClient.getSome());
+        return response(webFeign.getSome());
     }
 }
