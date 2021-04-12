@@ -1,4 +1,4 @@
-package com.wfw.ribbon.controller;
+package com.wfw.feign.controller;
 
 import com.wfw.framework.web.WebApiController;
 import com.wfw.framework.web.WebApiResponse;

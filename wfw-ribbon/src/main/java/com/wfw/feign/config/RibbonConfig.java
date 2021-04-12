@@ -1,4 +1,4 @@
-package com.wfw.ribbon.config;
+package com.wfw.feign.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

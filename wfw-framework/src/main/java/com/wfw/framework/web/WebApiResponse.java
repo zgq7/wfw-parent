@@ -24,6 +24,10 @@ public class WebApiResponse<T> {
         this.setMsg(HttpStatus.OK.getReasonPhrase());
     }
 
+    public static <T> WebApiResponse<T> ok() {
+        return new WebApiResponse<>();
+    }
+
     public static <T> WebApiResponse<T> ok(T data) {
         WebApiResponse<T> result = new WebApiResponse<>();
         result.setData(data);

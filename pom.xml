@@ -21,6 +21,7 @@
         <module>wfw-ribbon</module>
         <module>wfw-provider</module>
         <module>wfw-framework</module>
+        <module>wfw-feign</module>
     </modules>
 
     <properties>
