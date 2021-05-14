@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * @author liaonanzhou
  * @date 2021/2/3 15:54
@@ -24,6 +26,7 @@ public class WebController extends WebApiController {
     @GetMapping(value = "/getSome")
     public ResponseEntity<String> getSome() {
         logger.info("access info ...");
-        return response(WebApiResponse.ok(RandomStringUtils.random(8)));
+        long px = ThreadLocalRandom.current().nextLong(1000000000000L, 1000000000000L * 10);
+        return response(WebApiResponse.ok(px));
     }
 }

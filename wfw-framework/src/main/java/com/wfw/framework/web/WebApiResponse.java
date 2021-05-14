@@ -20,10 +20,10 @@ public class WebApiResponse<T> {
     private String msg;
 
     public static <T> WebApiResponse<T> ok() {
-        WebApiResponse webApiResponse = new WebApiResponse();
+        WebApiResponse<T> webApiResponse = new WebApiResponse<>();
         webApiResponse.setCode(HttpStatus.OK.value());
         webApiResponse.setMsg(HttpStatus.OK.getReasonPhrase());
-        return new WebApiResponse<>();
+        return webApiResponse;
     }
 
     public static <T> WebApiResponse<T> ok(T data) {

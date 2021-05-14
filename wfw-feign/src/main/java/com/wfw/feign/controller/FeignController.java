@@ -24,7 +24,7 @@ public class FeignController extends WebApiController {
         this.webFeign = webFeign;
     }
 
-    @GetMapping
+    @GetMapping(value = "/getSome")
     public ResponseEntity<String> getSome() {
         logger.info("access feign");
         return response(webFeign.getSome());

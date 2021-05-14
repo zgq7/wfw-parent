@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2021/4/12 16:18
  * @description
  **/
-@FeignClient(value = "WFW-PROVIDER",path = "/wfw/provider")
+@FeignClient(value = "WFW-PROVIDER", path = "/wfw/provider")
 public interface HystrixFeign {
 
     @GetMapping(value = "/pass")

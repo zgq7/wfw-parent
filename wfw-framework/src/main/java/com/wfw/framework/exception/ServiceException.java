@@ -1,6 +1,7 @@
 package com.wfw.framework.exception;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 
@@ -9,6 +10,7 @@ import java.io.Serializable;
  * @date 2021/2/3 15:28
  * @description
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ServiceException extends RuntimeException implements Serializable {
 
@@ -18,7 +20,11 @@ public class ServiceException extends RuntimeException implements Serializable {
 
     private String msg = "系统错误";
 
-    public ServiceException(String msg){
+    public ServiceException() {
+
+    }
+
+    public ServiceException(String msg) {
         super(msg);
         this.msg = msg;
     }
