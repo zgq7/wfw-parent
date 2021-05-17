@@ -27,16 +27,19 @@ public class VipUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        if (!username.equals("admin")) {
+        String usernameFx = "found";
+
+        logger.info("用户身份验证...");
+        if (!username.equals(usernameFx)) {
             logger.error("用户不存在!");
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(usernameFx);
         }
 
         List<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("admin"));
 
         String password = PasswordHelper.encryptPassword("123456");
-        return new User("admin", password, true, true, true, true, authorities);
+        return new User(usernameFx, password, true, true, true, true, authorities);
     }
 
 

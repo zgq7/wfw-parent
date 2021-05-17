@@ -1,5 +1,6 @@
 package com.wfw.auth.core;
 
+import com.wfw.auth.helper.PasswordHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
@@ -8,18 +9,15 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @description 自定义密码加密解密工具
  **/
 public class AuthPasswordEncoder implements PasswordEncoder {
+
     @Override
-    public String encode(CharSequence charSequence) {
-        return null;
+    public String encode(CharSequence rawPassword) {
+        return PasswordHelper.encryptPassword(rawPassword.toString());
     }
 
     @Override
-    public boolean matches(CharSequence charSequence, String s) {
-        return false;
+    public boolean matches(CharSequence rawPassword, String encodedPassword) {
+        return PasswordHelper.validatePassword(rawPassword.toString(), encodedPassword);
     }
 
-    @Override
-    public boolean upgradeEncoding(String encodedPassword) {
-        return false;
-    }
 }

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <property name="LOG_STYLE"
+              value="%red(%d{yyyy-MM-dd HH:mm:ss.SSS}) %highlight(%-6level) %green([ %-25thread ]) %boldMagenta(%-50logger ->%5L) ： %cyan(%msg) %n"/>
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${LOG_STYLE}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

@@ -19,6 +19,7 @@ public class WebApiResponse<T> {
 
     private String msg;
 
+
     public static <T> WebApiResponse<T> ok() {
         WebApiResponse<T> webApiResponse = new WebApiResponse<>();
         webApiResponse.setCode(HttpStatus.OK.value());
@@ -29,6 +30,13 @@ public class WebApiResponse<T> {
     public static <T> WebApiResponse<T> ok(T data) {
         WebApiResponse<T> result = WebApiResponse.ok();
         result.setData(data);
+        return result;
+    }
+
+    public static <T> WebApiResponse<T> build(int code, String msg) {
+        WebApiResponse<T> result = new WebApiResponse<>();
+        result.setCode(code);
+        result.setMsg(msg);
         return result;
     }
 
