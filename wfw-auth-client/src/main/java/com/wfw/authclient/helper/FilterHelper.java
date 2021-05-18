@@ -1,4 +1,4 @@
-package com.wfw.auth.helper;
+package com.wfw.authclient.helper;
 
 import com.alibaba.fastjson.JSON;
 import com.wfw.framework.exception.ServiceException;

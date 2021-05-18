@@ -1,15 +1,15 @@
 package com.wfw.auth.config;
 
 import com.wfw.auth.core.AuthPasswordEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.endpoint.TokenKeyEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
@@ -34,6 +34,15 @@ public class ApplicationConfig {
     @Bean
     public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory) {
         return new RedisTokenStore(redisConnectionFactory);
+    }
+
+    /**
+     * /oauth/token_key 接口404的问题
+     **/
+    @Bean
+    public TokenKeyEndpoint tokenKeyEndpoint() {
+        // 不尽兴自定义的TokenStoreService,因此使用默认的jwtConverter
+        return new TokenKeyEndpoint(new JwtAccessTokenConverter());
     }
 
     /**
