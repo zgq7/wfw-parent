@@ -87,8 +87,7 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         // 地址映射 默认地址：自定义地址
-        //endpoints.pathMapping("/oauth/token","/auth/login");
-        //endpoints.pathMapping("/auth/login", "/oauth/token");
+        endpoints.pathMapping("/oauth/token","/auth/login");
         // 配置授权服务器端点的属性
         endpoints.authenticationManager(authenticationManager)    //认证管理器
                 .tokenStore(tokenStore)
