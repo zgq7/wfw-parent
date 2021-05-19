@@ -76,7 +76,7 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         security
                 .passwordEncoder(passwordEncoder)                //设置密码编辑器
                 .tokenKeyAccess("permitAll()")                   //开启 /oauth/token_key 的访问权限控制
-                .checkTokenAccess("permitAll()")           //开启 /oauth/check_token 验证端口认证权限访问
+                .checkTokenAccess("permitAll()")                 //开启 /oauth/check_token 验证端口认证权限访问
         ;
     }
 
