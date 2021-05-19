@@ -75,8 +75,8 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
                 .passwordEncoder(passwordEncoder)                //设置密码编辑器
-                .tokenKeyAccess("permitAll()")                   //
-                .checkTokenAccess("isAuthenticated()")           //开启/oauth/check_token验证端口认证权限访问
+                .tokenKeyAccess("permitAll()")                   //开启 /oauth/token_key 的访问权限控制
+                .checkTokenAccess("permitAll()")           //开启 /oauth/check_token 验证端口认证权限访问
         ;
     }
 
