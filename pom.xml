@@ -22,8 +22,7 @@
         <module>wfw-provider</module>
         <module>wfw-framework</module>
         <module>wfw-feign</module>
-        <module>wfw-auth</module>
-        <module>wfw-auth-client</module>
+        <module>wfw-auth-parent</module>
     </modules>
 
     <properties>
