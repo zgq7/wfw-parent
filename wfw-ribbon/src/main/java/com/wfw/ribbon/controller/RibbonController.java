@@ -1,4 +1,4 @@
-package com.wfw.feign.controller;
+package com.wfw.ribbon.controller;
 
 import com.wfw.framework.web.WebApiController;
 import com.wfw.framework.web.WebApiResponse;
@@ -18,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 public class RibbonController extends WebApiController {
 
     private static final Logger logger = LoggerFactory.getLogger(RibbonController.class);
-    private static final String URL_PATH = "http://WFW-PROVIDER/";
+    private static final String URL_PATH = "http://WFW-PROVIDER/wfw/provider/web/getSome";
 
     private final RestTemplate restTemplate;
 

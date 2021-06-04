@@ -58,8 +58,9 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
                 .secret(secret)
                 .scopes("all")
                 .resourceIds("admin")
+                .redirectUris("http://www.baidu.com")
                 //客户端认证所支持的授权类型 1:客户端凭证 2:账号密码 3:授权码 4:token刷新 5:简易模式
-                .authorizedGrantTypes(CLIENT_CREDENTIALS, PASSWORD, REFRESH_TOKEN, AUTHORIZATION_CODE)
+                .authorizedGrantTypes(CLIENT_CREDENTIALS, PASSWORD, REFRESH_TOKEN, AUTHORIZATION_CODE, IMPLICIT)
                 //用户角色
                 .authorities("admin")
                 //允许自动授权
@@ -76,14 +77,15 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         security
                 .passwordEncoder(passwordEncoder)                //设置密码编辑器
                 .tokenKeyAccess("permitAll()")                   //开启 /oauth/token_key 的访问权限控制
-                .checkTokenAccess("permitAll()")                 //开启 /oauth/check_token 验证端口认证权限访问
+                .checkTokenAccess("isAuthenticated()")
+        //.checkTokenAccess("permitAll()")                 //开启 /oauth/check_token 验证端口认证权限访问
         ;
     }
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         // 地址映射 默认地址：自定义地址
-        endpoints.pathMapping("/oauth/token", "/auth/login");
+        //endpoints.pathMapping("/oauth/token", "/auth/login");
         // 配置授权服务器端点的属性
         endpoints.authenticationManager(authenticationManager)    //认证管理器
                 .tokenStore(tokenStore)

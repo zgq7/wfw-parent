@@ -34,7 +34,7 @@ public class FilterHelper {
     /**
      * @apiNote 直接返回
      */
-    public static void successResponse(HttpServletResponse response, WebApiResponse responseResult) {
+    public static void successResponse(HttpServletResponse response, WebApiResponse<?> responseResult) {
         response.setStatus(HttpStatus.OK.value());
         responseWriter(response, responseResult);
     }
@@ -42,7 +42,7 @@ public class FilterHelper {
     /**
      * @apiNote 构建response 的回应
      */
-    private static void responseWriter(HttpServletResponse response, WebApiResponse responseResult) {
+    private static void responseWriter(HttpServletResponse response, WebApiResponse<?> responseResult) {
         response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         PrintWriter out = null;

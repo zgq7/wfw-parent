@@ -34,10 +34,12 @@ public class WebResourceConfig extends ResourceServerConfigurerAdapter {
         http
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .and().formLogin().permitAll()
                 // 登录放通
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**")
+                //.authenticated()
                 .permitAll()
                 // 其他请求都需认证
                 .and()
