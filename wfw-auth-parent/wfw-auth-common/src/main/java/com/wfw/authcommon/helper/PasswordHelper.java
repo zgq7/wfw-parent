@@ -8,9 +8,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author Leethea
- * @apiNote
- * @date 2020/5/18 10:46
+ * @author liaonanzhou
+ * @date 2021/6/7 16:26
+ * @description 密码匹配器
  **/
 public class PasswordHelper {
 
@@ -50,13 +50,13 @@ public class PasswordHelper {
      * @return 密码是否正确
      **/
     public static boolean validatePassword(final String password,
-                                        final String encryptedPassword,
-                                        final EncryptionTypeEnum EncryptionTypeEnum) {
+                                           final String encryptedPassword,
+                                           final EncryptionTypeEnum EncryptionTypeEnum) {
         return getPasswordEncryptor(EncryptionTypeEnum).checkPassword(password, encryptedPassword);
     }
 
     public static boolean validatePassword(final String password,
-                                        final String encryptedPassword) {
+                                           final String encryptedPassword) {
         return getPasswordEncryptor(EncryptionTypeEnum.SHA256_BASE64).checkPassword(password, encryptedPassword);
     }
 

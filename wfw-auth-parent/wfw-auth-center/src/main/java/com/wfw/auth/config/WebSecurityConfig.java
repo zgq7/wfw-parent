@@ -26,14 +26,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         this.passwordEncoder = passwordEncoder;
     }
 
-    /**
-     * @apiNote 为数据库用户密码配置密码加密解密器
-     **/
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder);
+                .passwordEncoder(passwordEncoder);                  //为认证管理器配置passwordEncoder，无论客户端凭证密码还是用户密码都通过passwordEncoder进行密码匹配
     }
 
     @Bean

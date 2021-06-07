@@ -12,6 +12,7 @@
     <version>0.0.1-SNAPSHOT</version>
 
     <name>wfw-auth-parent</name>
+    <packaging>pom</packaging>
 
     <modules>
         <module>wfw-auth-center</module>
