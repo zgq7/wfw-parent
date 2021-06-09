@@ -56,8 +56,9 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         clients.inMemory()
                 .withClient(Oauth2ClientUserEnums.ADMIN.getClientId())
                 .secret(secret)
-                .scopes("all")
+                .scopes("all", "test")
                 .resourceIds("admin")
+                .autoApprove("all")
                 .redirectUris("http://www.baidu.com")
                 //客户端认证所支持的授权类型 1:客户端凭证 2:账号密码 3:授权码 4:token刷新 5:简易模式
                 .authorizedGrantTypes(CLIENT_CREDENTIALS, PASSWORD, REFRESH_TOKEN, AUTHORIZATION_CODE, IMPLICIT)
@@ -77,8 +78,7 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         security
                 .passwordEncoder(passwordEncoder)                //设置密码编辑器
                 .tokenKeyAccess("permitAll()")                   //开启 /oauth/token_key 的访问权限控制
-                .checkTokenAccess("isAuthenticated()")
-        //.checkTokenAccess("permitAll()")                 //开启 /oauth/check_token 验证端口认证权限访问
+                .checkTokenAccess("permitAll()")                 //开启 /oauth/check_token 验证端口认证权限访问
         ;
     }
 
