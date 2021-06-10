@@ -15,13 +15,14 @@ import org.springframework.security.oauth2.provider.error.WebResponseExceptionTr
  **/
 public class AuthTokenExceptionHandler implements WebResponseExceptionTranslator<OAuth2Exception> {
 
-
     private static final Logger logger = LoggerFactory.getLogger(AuthTokenExceptionHandler.class);
 
     @Override
-    public ResponseEntity translate(Exception e) {
+    public ResponseEntity<OAuth2Exception> translate(Exception e) {
         logger.error("授权异常:{}", e.getMessage());
-        return new ResponseEntity<>(WebApiResponse.build(HttpStatus.INTERNAL_SERVER_ERROR.value(), "授权异常"), HttpStatus.INTERNAL_SERVER_ERROR);
+        //return new ResponseEntity<>(WebApiResponse.build(HttpStatus.INTERNAL_SERVER_ERROR.value(), "授权异常"), HttpStatus.INTERNAL_SERVER_ERROR);
+        OAuth2Exception auth2Exception = (OAuth2Exception) e;
+        return ResponseEntity.ok(auth2Exception);
     }
 
 }
