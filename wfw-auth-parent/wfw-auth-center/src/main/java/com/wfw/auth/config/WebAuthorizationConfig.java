@@ -58,6 +58,7 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
                 .secret(secret)
                 .scopes("all", "test")
                 .resourceIds("admin")
+                // autoApprove 可跳过授权页直接返回code\token
                 .autoApprove("all")
                 .redirectUris("http://www.baidu.com")
                 //客户端认证所支持的授权类型 1:客户端凭证 2:账号密码 3:授权码 4:token刷新 5:简易模式
@@ -85,14 +86,31 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        // 地址映射 默认地址：自定义地址
-        //endpoints.pathMapping("/oauth/token", "/auth/login");
         // 配置授权服务器端点的属性
         endpoints.authenticationManager(authenticationManager)    //认证管理器
                 .tokenStore(tokenStore)
                 .authorizationCodeServices(authorizationCodeServices)
                 .userDetailsService(userDetailsService)
                 .exceptionTranslator(authTokenExceptionHandler);
+
+
+        //overrideUrl(endpoints);
+    }
+
+    /**
+     * 更改oauth2默认url
+     **/
+    private void overrideUrl(AuthorizationServerEndpointsConfigurer endpoints) {
+        // 地址映射 默认地址：自定义地址
+        endpoints
+                // token获取
+                .pathMapping("/oauth/token", "/auth/login")
+                // 授权认证
+                .pathMapping("/oauth/authorize", "/auth/authorize")
+                // 授权确认
+                .pathMapping("/oauth/confirm_access", "/auth/confirm_access")
+        ;
+
     }
 
 

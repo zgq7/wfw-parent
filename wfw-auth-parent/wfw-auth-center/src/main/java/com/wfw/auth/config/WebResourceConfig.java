@@ -39,7 +39,6 @@ public class WebResourceConfig extends ResourceServerConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers("/oauth/**", "/favicon.ico")
-                //.authenticated()
                 .permitAll()
                 // 其他请求都需认证
                 .and()

@@ -26,6 +26,7 @@
             <artifactId>spring-cloud-starter-oauth2</artifactId>
             <groupId>org.springframework.cloud</groupId>
         </dependency>
+        <!--使用redis存放token-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-redis</artifactId>
