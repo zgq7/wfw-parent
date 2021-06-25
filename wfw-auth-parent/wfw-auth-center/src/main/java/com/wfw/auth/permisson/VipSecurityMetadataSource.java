@@ -4,10 +4,7 @@ import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -58,7 +55,11 @@ public class VipSecurityMetadataSource implements FilterInvocationSecurityMetada
 
     @Override
     public Collection<ConfigAttribute> getAllConfigAttributes() {
-        return null;
+        loadPerms();
+
+        Set<ConfigAttribute> attributeSet = new HashSet<>();
+        permRoleEntitySet.stream().map(PermRoleEntity::getConfigAttributeList).forEach(attributeSet::addAll);
+        return attributeSet;
     }
 
     @Override

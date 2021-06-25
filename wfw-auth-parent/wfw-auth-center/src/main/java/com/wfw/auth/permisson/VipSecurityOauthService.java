@@ -14,6 +14,9 @@ import java.util.Set;
 @Component
 public class VipSecurityOauthService {
 
+    /**
+     * 动态加载权限-角色信息
+     **/
     public Set<PermRoleEntity> loadPerms() {
         Set<PermRoleEntity> permRoleEntitySet = new HashSet<>();
         permRoleEntitySet.add(new PermRoleEntity().setAccessUri("/demo/admin").setConfigAttributeList(SecurityConfig.createList("admin")));

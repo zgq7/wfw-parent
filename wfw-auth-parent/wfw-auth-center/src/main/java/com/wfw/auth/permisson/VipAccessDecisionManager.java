@@ -28,7 +28,7 @@ public class VipAccessDecisionManager implements AccessDecisionManager {
             //将访问所需资源或用户拥有资源进行比对
             String needAuthority = configAttribute.getAttribute();
             if (needAuthority == null) {
-                return;
+                continue;
             }
             for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
                 if (needAuthority.trim().equals(grantedAuthority.getAuthority())) {
