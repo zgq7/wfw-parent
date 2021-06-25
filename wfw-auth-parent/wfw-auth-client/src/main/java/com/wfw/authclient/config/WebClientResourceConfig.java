@@ -1,6 +1,6 @@
 package com.wfw.authclient.config;
 
-import com.wfw.auth.handle.AuthClientExceptionHandler;
+import com.wfw.authcommon.handle.AuthClientExceptionHandler;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
