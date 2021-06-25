@@ -18,6 +18,9 @@ import java.util.Collection;
 @Component
 public class VipAccessDecisionManager implements AccessDecisionManager {
 
+    /**
+     * 决定当前用户是否有权限访问该请求
+     **/
     @Override
     public void decide(Authentication authentication, Object object,
                        Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {
@@ -25,7 +28,7 @@ public class VipAccessDecisionManager implements AccessDecisionManager {
             //将访问所需资源或用户拥有资源进行比对
             String needAuthority = configAttribute.getAttribute();
             if (needAuthority == null) {
-                return ;
+                return;
             }
             for (GrantedAuthority grantedAuthority : authentication.getAuthorities()) {
                 if (needAuthority.trim().equals(grantedAuthority.getAuthority())) {

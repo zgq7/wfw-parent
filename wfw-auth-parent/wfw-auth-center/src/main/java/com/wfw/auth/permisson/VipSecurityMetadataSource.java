@@ -31,6 +31,9 @@ public class VipSecurityMetadataSource implements FilterInvocationSecurityMetada
         permRoleEntitySet = vipSecurityOauthService.loadPerms();
     }
 
+    /**
+     * 返回能访问该请求的所有角色集合
+     **/
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {
         loadPerms();
@@ -60,6 +63,6 @@ public class VipSecurityMetadataSource implements FilterInvocationSecurityMetada
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return false;
+        return FilterInvocation.class.isAssignableFrom(clazz);
     }
 }
