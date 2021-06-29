@@ -20,6 +20,8 @@ public class VipSecurityOauthService {
     public Set<PermRoleEntity> loadPerms() {
         Set<PermRoleEntity> permRoleEntitySet = new HashSet<>();
         permRoleEntitySet.add(new PermRoleEntity().setAccessUri("/demo/admin").setConfigAttributeList(SecurityConfig.createList("admin")));
+        permRoleEntitySet.add(new PermRoleEntity().setAccessUri("/auth/**").setConfigAttributeList(SecurityConfig.createList("admin")));
+
         permRoleEntitySet.add(new PermRoleEntity().setAccessUri("/demo/sp-admin").setConfigAttributeList(SecurityConfig.createList("sp_admin")));
 
         return permRoleEntitySet;

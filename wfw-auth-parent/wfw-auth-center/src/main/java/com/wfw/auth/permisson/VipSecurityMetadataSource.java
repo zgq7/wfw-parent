@@ -3,9 +3,11 @@ package com.wfw.auth.permisson;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.util.AntPathMatcher;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author liaonanzhou
@@ -13,6 +15,8 @@ import java.util.stream.Collectors;
  * @description 动态权限调用服务
  **/
 public class VipSecurityMetadataSource implements FilterInvocationSecurityMetadataSource {
+
+    private static final AntPathMatcher ANT_PATH_MATCHER = new AntPathMatcher();
 
     private Set<PermRoleEntity> permRoleEntitySet;
 
@@ -37,20 +41,13 @@ public class VipSecurityMetadataSource implements FilterInvocationSecurityMetada
 
         FilterInvocation fi = (FilterInvocation) object;
         String access_uri = fi.getRequestUrl();
-        String path = access_uri.split("\\?")[0];
 
-        Map<String, List<ConfigAttribute>> configAttributeMap = permRoleEntitySet.stream()
-                .collect(Collectors.toMap(
-                        PermRoleEntity::getAccessUri,
-                        PermRoleEntity::getConfigAttributeList)
-                );
-
-        if (configAttributeMap.get(path) != null) {
-            return configAttributeMap.get(path);
-        } else {
-            return superMetadataSource.getAttributes(object);
+        for (PermRoleEntity permRoleEntity : permRoleEntitySet) {
+            if (ANT_PATH_MATCHER.match(permRoleEntity.getAccessUri(), access_uri))
+                return permRoleEntity.getConfigAttributeList();
         }
 
+        return superMetadataSource.getAttributes(object);
     }
 
     @Override

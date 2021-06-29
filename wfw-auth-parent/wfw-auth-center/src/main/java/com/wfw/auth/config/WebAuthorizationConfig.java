@@ -13,8 +13,11 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
+import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
 
 import static com.wfw.authcommon.common.constants.GrantTypeConstants.*;
@@ -34,31 +37,48 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
     private final TokenStore tokenStore;
     private final AuthorizationCodeServices authorizationCodeServices;
     private final AuthTokenExceptionHandler authTokenExceptionHandler;
+    private final DataSource dataSource;
+    private final JwtAccessTokenConverter jwtAccessTokenConverter;
+    private final AuthorizationServerTokenServices tokenService;
 
     public WebAuthorizationConfig(AuthenticationManager authenticationManager,
                                   UserDetailsService userDetailsService,
                                   PasswordEncoder passwordEncoder,
                                   TokenStore tokenStore,
                                   AuthorizationCodeServices authorizationCodeServices,
-                                  AuthTokenExceptionHandler authTokenExceptionHandler) {
+                                  AuthTokenExceptionHandler authTokenExceptionHandler,
+                                  DataSource dataSource,
+                                  JwtAccessTokenConverter jwtAccessTokenConverter,
+                                  AuthorizationServerTokenServices tokenService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.tokenStore = tokenStore;
         this.authorizationCodeServices = authorizationCodeServices;
         this.authTokenExceptionHandler = authTokenExceptionHandler;
+        this.dataSource = dataSource;
+        this.jwtAccessTokenConverter = jwtAccessTokenConverter;
+        this.tokenService = tokenService;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        String secret = PasswordHelper.encryptPassword(Oauth2ClientUserEnums.ADMIN.getClientSecret());
 
+        clients.jdbc(dataSource);
+
+    }
+
+    /**
+     * 内存存放客户端配置
+     **/
+    private void clientWithInMemory(ClientDetailsServiceConfigurer clients) throws Exception {
+        String secret = PasswordHelper.encryptPassword(Oauth2ClientUserEnums.ADMIN.getClientSecret());
         clients.inMemory()
                 .withClient(Oauth2ClientUserEnums.ADMIN.getClientId())
                 .secret(secret)
                 .scopes("all", "test")
                 .resourceIds("admin")
-                // autoApprove 可跳过授权页直接返回code\token
+                // autoApprove 可跳过授权页直接返回code/token
                 .autoApprove("all")
                 .redirectUris("http://www.baidu.com")
                 //客户端认证所支持的授权类型 1:客户端凭证 2:账号密码 3:授权码 4:token刷新 5:简易模式
@@ -89,6 +109,7 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         // 配置授权服务器端点的属性
         endpoints.authenticationManager(authenticationManager)    //认证管理器
                 .tokenStore(tokenStore)
+                .tokenServices(tokenService)
                 .authorizationCodeServices(authorizationCodeServices)
                 .userDetailsService(userDetailsService)
                 .exceptionTranslator(authTokenExceptionHandler);

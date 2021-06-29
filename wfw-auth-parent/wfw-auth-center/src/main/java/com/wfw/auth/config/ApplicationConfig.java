@@ -5,13 +5,17 @@ import com.wfw.authcommon.handle.AuthClientExceptionHandler;
 import com.wfw.authcommon.handle.AuthTokenExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.jwt.crypto.sign.MacSigner;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.endpoint.TokenKeyEndpoint;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
+import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
@@ -43,18 +47,40 @@ public class ApplicationConfig {
     /**
      * token 存储器
      **/
-    @Bean
+    //@Bean
     public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory) {
         return new RedisTokenStore(redisConnectionFactory);
     }
 
     /**
-     * /oauth/token_key 接口404的问题
+     * token 存储器 JWT
      **/
     @Bean
-    public TokenKeyEndpoint tokenKeyEndpoint() {
-        // 不尽兴自定义的TokenStoreService,因此使用默认的jwtConverter
-        return new TokenKeyEndpoint(new JwtAccessTokenConverter());
+    public TokenStore tokenStore(JwtAccessTokenConverter jwtAccessTokenConverter) {
+        return new JwtTokenStore(jwtAccessTokenConverter);
+    }
+
+    @Bean
+    @Primary
+    public AuthorizationServerTokenServices defaultTokenServices(TokenStore tokenStore,JwtAccessTokenConverter jwtAccessTokenConverter) {
+        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        defaultTokenServices.setSupportRefreshToken(true);
+        defaultTokenServices.setTokenStore(tokenStore);
+        defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter);
+        defaultTokenServices.setAccessTokenValiditySeconds(3600);
+        defaultTokenServices.setAccessTokenValiditySeconds(7200);
+
+        return defaultTokenServices;
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+        JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+        // 签名密钥
+        jwtAccessTokenConverter.setSigningKey("sign_key");
+        // 验证密钥
+        jwtAccessTokenConverter.setVerifier(new MacSigner("sign_key"));
+        return jwtAccessTokenConverter;
     }
 
     /**
@@ -64,5 +90,6 @@ public class ApplicationConfig {
     public AuthorizationCodeServices authorizationCodeServices() {
         return new InMemoryAuthorizationCodeServices();
     }
+
 
 }
