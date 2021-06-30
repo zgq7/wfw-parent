@@ -15,7 +15,6 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
@@ -38,7 +37,6 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
     private final AuthorizationCodeServices authorizationCodeServices;
     private final AuthTokenExceptionHandler authTokenExceptionHandler;
     private final DataSource dataSource;
-    private final JwtAccessTokenConverter jwtAccessTokenConverter;
     private final AuthorizationServerTokenServices tokenService;
 
     public WebAuthorizationConfig(AuthenticationManager authenticationManager,
@@ -48,7 +46,6 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
                                   AuthorizationCodeServices authorizationCodeServices,
                                   AuthTokenExceptionHandler authTokenExceptionHandler,
                                   DataSource dataSource,
-                                  JwtAccessTokenConverter jwtAccessTokenConverter,
                                   AuthorizationServerTokenServices tokenService) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
@@ -57,7 +54,6 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
         this.authorizationCodeServices = authorizationCodeServices;
         this.authTokenExceptionHandler = authTokenExceptionHandler;
         this.dataSource = dataSource;
-        this.jwtAccessTokenConverter = jwtAccessTokenConverter;
         this.tokenService = tokenService;
     }
 

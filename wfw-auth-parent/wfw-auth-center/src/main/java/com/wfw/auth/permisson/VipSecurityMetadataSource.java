@@ -23,7 +23,8 @@ public class VipSecurityMetadataSource implements FilterInvocationSecurityMetada
     private final FilterInvocationSecurityMetadataSource superMetadataSource;
     private final VipSecurityOauthService vipSecurityOauthService;
 
-    public VipSecurityMetadataSource(FilterInvocationSecurityMetadataSource superMetadataSource, VipSecurityOauthService vipSecurityOauthService) {
+    public VipSecurityMetadataSource(FilterInvocationSecurityMetadataSource superMetadataSource,
+                                     VipSecurityOauthService vipSecurityOauthService) {
         this.superMetadataSource = superMetadataSource;
         this.vipSecurityOauthService = vipSecurityOauthService;
     }

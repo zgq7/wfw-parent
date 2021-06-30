@@ -7,8 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.jwt.crypto.sign.MacSigner;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
@@ -62,13 +64,18 @@ public class ApplicationConfig {
 
     @Bean
     @Primary
-    public AuthorizationServerTokenServices defaultTokenServices(TokenStore tokenStore,JwtAccessTokenConverter jwtAccessTokenConverter) {
+    public AuthorizationServerTokenServices defaultTokenServices(TokenStore tokenStore,
+                                                                 JwtAccessTokenConverter jwtAccessTokenConverter,
+                                                                 ClientDetailsService clientDetailsService,
+                                                                 AuthenticationManager authenticationManager) {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
         defaultTokenServices.setSupportRefreshToken(true);
         defaultTokenServices.setTokenStore(tokenStore);
         defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter);
         defaultTokenServices.setAccessTokenValiditySeconds(3600);
-        defaultTokenServices.setAccessTokenValiditySeconds(7200);
+        defaultTokenServices.setRefreshTokenValiditySeconds(7200);
+        defaultTokenServices.setClientDetailsService(clientDetailsService);
+        defaultTokenServices.setAuthenticationManager(authenticationManager);
 
         return defaultTokenServices;
     }
