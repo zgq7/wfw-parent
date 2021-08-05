@@ -107,7 +107,7 @@ public class HystrixFeignCommand extends HystrixCommand<WebApiResponse<?>> {
     }
 
     /**
-     * #execute() or qu
+     * #execute() or #queue() 执行报错就会调用这个方法
      **/
     @Override
     protected WebApiResponse<?> getFallback() {
