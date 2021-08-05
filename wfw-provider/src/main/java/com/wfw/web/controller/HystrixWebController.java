@@ -16,16 +16,15 @@ import org.springframework.web.bind.annotation.RequestParam;
  **/
 @Controller
 @RequestMapping(value = "/hystrix")
-public class HystrixController extends WebApiController {
+public class HystrixWebController extends WebApiController {
 
     @GetMapping(value = "/pass")
     public ResponseEntity<String> pass(@RequestParam Integer xp) {
         WebApiResponse<Boolean> webApiResponse = WebApiResponse.ok();
         webApiResponse.setData(true);
         if ((xp / 2) == 0) {
-            throw new ServiceException();
+            throw new ServiceException("hystrix模拟接口错误...");
         }
-
         return response(webApiResponse);
     }
 }

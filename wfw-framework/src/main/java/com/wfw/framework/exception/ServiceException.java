@@ -1,5 +1,6 @@
 package com.wfw.framework.exception;
 
+import com.wfw.framework.web.WebApiResponse;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -21,17 +22,23 @@ public class ServiceException extends RuntimeException implements Serializable {
     private String msg = "系统错误";
 
     public ServiceException() {
-
     }
 
     public ServiceException(String msg) {
-        super(msg);
         this.msg = msg;
     }
 
     public ServiceException(int code, String msg) {
-        super(msg);
         this.code = code;
         this.msg = msg;
+    }
+
+    public static ServiceException build(WebApiResponse<?> webApiResponse) {
+        return new ServiceException(webApiResponse.getCode(), webApiResponse.getMsg());
+    }
+
+    @Override
+    public String getMessage() {
+        return msg;
     }
 }

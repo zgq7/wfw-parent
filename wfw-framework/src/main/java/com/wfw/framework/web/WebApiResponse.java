@@ -1,8 +1,11 @@
 package com.wfw.framework.web;
 
+import com.wfw.framework.exception.ServiceException;
 import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
+
+import java.beans.Transient;
 
 /**
  * @Author liaonanzhou
@@ -19,6 +22,10 @@ public class WebApiResponse<T> {
 
     private String msg;
 
+    @Transient
+    public boolean isOk() {
+        return this.code == HttpStatus.OK.value();
+    }
 
     public static <T> WebApiResponse<T> ok() {
         WebApiResponse<T> webApiResponse = new WebApiResponse<>();
@@ -37,6 +44,13 @@ public class WebApiResponse<T> {
         WebApiResponse<T> result = new WebApiResponse<>();
         result.setCode(code);
         result.setMsg(msg);
+        return result;
+    }
+
+    public static <T> WebApiResponse<T> build(ServiceException serviceException) {
+        WebApiResponse<T> result = new WebApiResponse<>();
+        result.setCode(serviceException.getCode());
+        result.setMsg(serviceException.getMsg());
         return result;
     }
 
