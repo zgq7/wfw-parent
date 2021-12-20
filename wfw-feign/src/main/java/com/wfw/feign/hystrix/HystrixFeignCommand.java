@@ -37,17 +37,17 @@ public class HystrixFeignCommand extends HystrixCommand<WebApiResponse<?>> {
                         // 线程池控制
                         .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter()
                                 // 核心线程数
-                                .withCoreSize(1)
+                                .withCoreSize(10)
                                 // 最大线程数
-                                .withMaximumSize(1)
-                                // 最大队列数
+                                .withMaximumSize(10)
+                                // 最大队列数（线程池的队列数不能小于等于0）
                                 .withMaxQueueSize(10)
                                 // 线程空闲后保持存活时间
                                 .withKeepAliveTimeMinutes(1)
                                 // 置allowMaximumSizeToDivergeFromCoreSize值为true时，maximumSize才有作用
                                 .withAllowMaximumSizeToDivergeFromCoreSize(true)
                                 // 排队线程数量阈值，默认为5，达到时拒绝，如果配置了该选项，队列的大小是该队列
-                                .withQueueSizeRejectionThreshold(10)
+                                .withQueueSizeRejectionThreshold(3)
                         )
                         .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                                 .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.THREAD)
@@ -73,6 +73,21 @@ public class HystrixFeignCommand extends HystrixCommand<WebApiResponse<?>> {
                 Setter.withGroupKey(HystrixCommandGroupKey.Factory.asKey("HystrixFeignCommand-SEMAPHORE"))
                         .andCommandKey(HystrixCommandKey.Factory.asKey("HystrixFeignCommand-SEMAPHORE"))
                         .andThreadPoolKey(HystrixThreadPoolKey.Factory.asKey("HystrixFeignCommand-SEMAPHORE"))
+                        // 当模式为 SEMAPHORE 线程池配置不会生效
+                        .andThreadPoolPropertiesDefaults(HystrixThreadPoolProperties.Setter()
+                                // 核心线程数
+                                .withCoreSize(10)
+                                // 最大线程数
+                                .withMaximumSize(10)
+                                // 最大队列数（线程池的队列数不能小于等于0）
+                                .withMaxQueueSize(10)
+                                // 线程空闲后保持存活时间
+                                .withKeepAliveTimeMinutes(1)
+                                // 置allowMaximumSizeToDivergeFromCoreSize值为true时，maximumSize才有作用
+                                .withAllowMaximumSizeToDivergeFromCoreSize(true)
+                                // 排队线程数量阈值，默认为5，达到时拒绝，如果配置了该选项，队列的大小是该队列
+                                .withQueueSizeRejectionThreshold(3)
+                        )
                         // 信号量控制
                         .andCommandPropertiesDefaults(HystrixCommandProperties.Setter()
                                 .withExecutionIsolationStrategy(HystrixCommandProperties.ExecutionIsolationStrategy.SEMAPHORE)
@@ -87,7 +102,7 @@ public class HystrixFeignCommand extends HystrixCommand<WebApiResponse<?>> {
                                 .withExecutionTimeoutInMilliseconds(3000)
                                 // fixme Semaphore 属性
                                 // 最大并发 1，默认10
-                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(1)
+                                .withExecutionIsolationSemaphoreMaxConcurrentRequests(10)
                         )
         );
     }

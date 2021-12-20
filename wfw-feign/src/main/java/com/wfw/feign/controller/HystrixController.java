@@ -49,6 +49,7 @@ public class HystrixController extends WebApiController {
     }
 
     @ExceptionHandler(HystrixRuntimeException.class)
+    @ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
     public ResponseEntity<String> hystrixRuntimeException(HystrixRuntimeException e) {
         logger.error("hystrix error ：", e);
         if (HystrixRuntimeException.FailureType.SHORTCIRCUIT.equals(e.getFailureType())) {
