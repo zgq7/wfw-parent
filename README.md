@@ -3,7 +3,7 @@
 - SpringCloud 系列练习手册
 - Welcome to fork and star
 
-1：OAuth2 篇
+## 1：OAuth2 篇
 
 SpringCloud-OAuth2（一）：基础篇
 https://www.cnblogs.com/zgq7/p/14797067.html
