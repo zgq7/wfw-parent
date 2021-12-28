@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.A
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -36,8 +37,9 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
     private final TokenStore tokenStore;
     private final AuthorizationCodeServices authorizationCodeServices;
     private final AuthTokenExceptionHandler authTokenExceptionHandler;
-    private final DataSource dataSource;
     private final AuthorizationServerTokenServices tokenService;
+    private final ClientDetailsService clientDetailsService;
+    private final DataSource dataSource;
 
     public WebAuthorizationConfig(AuthenticationManager authenticationManager,
                                   UserDetailsService userDetailsService,
@@ -45,23 +47,32 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
                                   TokenStore tokenStore,
                                   AuthorizationCodeServices authorizationCodeServices,
                                   AuthTokenExceptionHandler authTokenExceptionHandler,
-                                  DataSource dataSource,
-                                  AuthorizationServerTokenServices tokenService) {
+                                  AuthorizationServerTokenServices tokenService,
+                                  ClientDetailsService clientDetailsService,
+                                  DataSource dataSource) {
         this.authenticationManager = authenticationManager;
         this.userDetailsService = userDetailsService;
         this.passwordEncoder = passwordEncoder;
         this.tokenStore = tokenStore;
         this.authorizationCodeServices = authorizationCodeServices;
         this.authTokenExceptionHandler = authTokenExceptionHandler;
-        this.dataSource = dataSource;
         this.tokenService = tokenService;
+        this.clientDetailsService = clientDetailsService;
+        this.dataSource = dataSource;
     }
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        /*
+         * ----------------【配置client加载源】---------------
+         */
 
-        clients.jdbc(dataSource);
-
+        // 自定义加载
+        clients.withClientDetails(clientDetailsService);
+        // 内存加载
+        //clients.jdbc(dataSource);
+        // 内存加载
+        //clientWithInMemory(clients);
     }
 
     /**
@@ -75,14 +86,17 @@ public class WebAuthorizationConfig extends AuthorizationServerConfigurerAdapter
                 .scopes("all", "test")
                 .resourceIds("admin")
                 // autoApprove 可跳过授权页直接返回code/token
+                .autoApprove(false)
+                // autoApprove = true，approveScope 用这个
                 .autoApprove("all")
+                // autoApprove = false，approveScope 用这个
+                .scopes("default-user")
                 .redirectUris("http://www.baidu.com")
                 //客户端认证所支持的授权类型 1:客户端凭证 2:账号密码 3:授权码 4:token刷新 5:简易模式
                 .authorizedGrantTypes(CLIENT_CREDENTIALS, PASSWORD, REFRESH_TOKEN, AUTHORIZATION_CODE, IMPLICIT)
                 //用户角色
                 .authorities("admin")
                 //允许自动授权
-                .autoApprove(false)
                 //token 过期时间
                 .accessTokenValiditySeconds((int) TimeUnit.HOURS.toSeconds(12))
                 //refresh_token 过期时间

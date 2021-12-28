@@ -1,5 +1,6 @@
 package com.wfw.auth.config;
 
+import com.wfw.auth.service.VipTokenService;
 import com.wfw.authcommon.core.AuthPasswordEncoder;
 import com.wfw.authcommon.handle.AuthClientExceptionHandler;
 import com.wfw.authcommon.handle.AuthTokenExceptionHandler;
@@ -68,7 +69,13 @@ public class ApplicationConfig {
                                                                  JwtAccessTokenConverter jwtAccessTokenConverter,
                                                                  ClientDetailsService clientDetailsService,
                                                                  AuthenticationManager authenticationManager) {
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        /*
+         * 默认的token service 会走事务并开启事务、提交事务、回滚事务等，需要占用jdbc 连接，不利于提高QPS。
+         */
+        //DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+        VipTokenService vipTokenService = new VipTokenService(tokenStore, clientDetailsService, jwtAccessTokenConverter, authenticationManager);
+
+        DefaultTokenServices defaultTokenServices = vipTokenService.getDefaultTokenServices();
         defaultTokenServices.setSupportRefreshToken(true);
         defaultTokenServices.setTokenStore(tokenStore);
         defaultTokenServices.setTokenEnhancer(jwtAccessTokenConverter);
@@ -77,7 +84,7 @@ public class ApplicationConfig {
         defaultTokenServices.setClientDetailsService(clientDetailsService);
         defaultTokenServices.setAuthenticationManager(authenticationManager);
 
-        return defaultTokenServices;
+        return vipTokenService;
     }
 
     @Bean
