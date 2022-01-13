@@ -2,6 +2,7 @@ package com.wfw.feign.service;
 
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import com.netflix.hystrix.contrib.javanica.conf.HystrixPropertiesManager;
 import com.wfw.feign.feign.HystrixFeign;
 import com.wfw.framework.exception.ServiceException;
 import com.wfw.framework.web.WebApiResponse;
@@ -22,6 +23,7 @@ public class HystrixService {
 
     /**
      * You can use @HystrixCommand annotation only on @service or @component class bean
+     * {@link HystrixPropertiesManager}
      **/
     @HystrixCommand(
             groupKey = "hystrixFeign",
