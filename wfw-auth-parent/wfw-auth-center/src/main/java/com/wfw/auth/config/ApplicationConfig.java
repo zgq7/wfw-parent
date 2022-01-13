@@ -102,6 +102,7 @@ public class ApplicationConfig {
      **/
     @Bean
     public AuthorizationCodeServices authorizationCodeServices() {
+        // 生成的code只能使用一次（无论成功还是失败）
         return new InMemoryAuthorizationCodeServices();
     }
 

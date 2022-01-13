@@ -3,6 +3,7 @@ package com.wfw.feign.controller;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import com.wfw.feign.feign.HystrixFeign;
 import com.wfw.feign.hystrix.HystrixFeignCommand;
+import com.wfw.feign.service.HystrixService;
 import com.wfw.framework.exception.ServiceException;
 import com.wfw.framework.web.WebApiController;
 import com.wfw.framework.web.WebApiResponse;
@@ -23,9 +24,11 @@ public class HystrixController extends WebApiController {
     private static final Logger logger = LoggerFactory.getLogger(HystrixController.class);
 
     private final HystrixFeign hystrixFeign;
+    private final HystrixService hystrixService;
 
-    public HystrixController(HystrixFeign hystrixFeign) {
+    public HystrixController(HystrixFeign hystrixFeign, HystrixService hystrixService) {
         this.hystrixFeign = hystrixFeign;
+        this.hystrixService = hystrixService;
     }
 
     /**
@@ -36,6 +39,14 @@ public class HystrixController extends WebApiController {
         HystrixFeignCommand command = HystrixFeignCommand.newSemaphoreCommand(hystrixFeign);
         command.setXp(xp);
         return response(command.execute());
+    }
+
+    /**
+     * 信号量隔离
+     */
+    @PostMapping(value = "/semaphore2/{xp}")
+    public ResponseEntity<String> semaphore2(@PathVariable(name = "xp") Integer xp) {
+        return response(hystrixService.pass(xp));
     }
 
     /**
@@ -70,7 +81,6 @@ public class HystrixController extends WebApiController {
             return response(WebApiResponse.build(new ServiceException(400_100, "熔断器执行异常")), HttpStatus.SERVICE_UNAVAILABLE);
         }
     }
-
 
 
 }
