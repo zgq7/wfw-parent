@@ -8,6 +8,8 @@ import com.wfw.framework.exception.ServiceException;
 import com.wfw.framework.web.WebApiResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.function.Supplier;
+
 /**
  * @author liaonanzhou
  * @date 2022/1/13 17:18
